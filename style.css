@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 20px 0;
+  align-items: center;
+}
+.top * {
+  margin: 0 auto;
+}
+.top .num {
+}
+.top .emo {
+  font-size: 16px;
+}
+.top .time {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.board {
+}
+.board .row {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 26px;
+}
+
+.btn.mine {
+  background-color: red;
+}
