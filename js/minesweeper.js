@@ -1,17 +1,15 @@
-const N = 10;
-const m = 10;
-let remaining = m;
-let opened = 0;
-
 const num_r = document.querySelector(".remaining > span");
 const emo = document.querySelector(".emo");
+const display = document.querySelector(".time");
 const board = document.querySelector(".board");
-let btns = new Array(N);
 
+let btns = new Array(N);
 let mList = new Array(m);
 let bList = Array.from(Array(N), () => Array(N).fill(""));
 let shown = Array.from(Array(N), () => Array(N).fill(""));
 
+let remaining = m;
+let opened = 0;
 
 function genRandom(num) {
     const number = Math.floor(Math.random() * num);
@@ -63,7 +61,10 @@ function endGame() {
         for (var i = 0; i < N; i++){
             for (var j = 0; j < N; j++){
                 btn = btns[i][j];
-                if(bList[i][j] === "💣") btn.innerText = "🚩";
+                if(bList[i][j] === "💣") {
+                    btn.innerText = "🚩";
+                    remaining--;
+                }
                 btn.removeEventListener("click", handleClick);
                 btn.removeEventListener("contextmenu", handleRightClick);
             }
@@ -97,7 +98,9 @@ function reset() {
         }
         remaining = m;
         opened = 0;
+        time = 0;
         num_r.innerText = remaining;
+        display.innerText = time;
         setMine();
         calculate();
     }
