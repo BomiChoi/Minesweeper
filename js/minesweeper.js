@@ -183,7 +183,6 @@ function handleClick(event) {
 
 //우클릭
 function handleRightClick(event) {
-    event.preventDefault();
     if (!sw) sw = true;
     const btn = event.target;
     const id = btn.id;
