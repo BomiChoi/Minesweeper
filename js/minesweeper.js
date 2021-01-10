@@ -1,5 +1,3 @@
-navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate; //진동 설정
-
 const num_r = document.querySelector(".remaining");
 const emo = document.querySelector(".emo");
 const display = document.querySelector(".time");
@@ -15,12 +13,7 @@ let opened;
 
 //진동
 function vibrate() {
-    if (navigator.vibrate) {
-        navigator.vibrate(500); // 진동을 울리게 한다. 1000ms = 1초
-    }
-    else {
-        alert("진동을 지원하지 않는 기종 입니다.");
-    }
+    window.navigator.vibrate(200); // 진동을 울리게 한다. 1000ms = 1초
 }
 
 
