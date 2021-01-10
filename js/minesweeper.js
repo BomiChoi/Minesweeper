@@ -206,9 +206,11 @@ function handleRightClick(event) {
 let longtouch = false;
 let touchInterval;
 function onTouchStart(event) {
+    event.preventDefault();
     touchInterval = setInterval(function(){longtouch = true}, 1000);
 }
 function onTouchEnd(event) {
+    event.preventDefault();
     clearInterval(touchInterval);
     if (longtouch) {
         handleRightClick(event);
