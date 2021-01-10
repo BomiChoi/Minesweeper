@@ -1,7 +1,20 @@
-function runTimer() {
-    if (sw) {
-        time++;
-        display.innerText = fillZero(time);
-    }
+let interval;
+
+function increaseTime() {
+    time++;
+    display.innerText = fillZero(time);
 }
-setInterval(runTimer, 1000);
+
+function runTimer() {
+    interval = setInterval(increaseTime, 1000);
+}
+
+function stopTimer() {
+    clearInterval(interval);
+}
+
+function resetTimer() {
+    time = 0;
+    display.innerText = fillZero(time);
+}
+

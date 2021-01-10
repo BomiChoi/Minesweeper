@@ -1,21 +1,37 @@
+navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate; //진동 설정
+
 const num_r = document.querySelector(".remaining");
 const emo = document.querySelector(".emo");
 const display = document.querySelector(".time");
 const board = document.querySelector(".board");
 
-let btns = new Array(N);
-let mList = new Array(m);
-let bList = Array.from(Array(N), () => Array(N).fill(""));
-let shown = Array.from(Array(N), () => Array(N).fill(""));
+let btns;
+let mList;
+let bList;
+let shown;
 
-let remaining = m;
-let opened = 0;
+let remaining;
+let opened;
 
+//진동
+function vibrate() {
+    if (navigator.vibrate) {
+        navigator.vibrate(500); // 진동을 울리게 한다. 1000ms = 1초
+    }
+    else {
+        alert("진동을 지원하지 않는 기종 입니다.");
+    }
+}
+
+
+
+//난수 생성
 function genRandom(num) {
     const number = Math.floor(Math.random() * num);
     return number;
 }
 
+//지뢰 위치 설정
 function setMine() {
     for (var i = 0; i < m; i++) {
         rand = genRandom(N*N)
@@ -30,6 +46,7 @@ function setMine() {
     }
 }
 
+//보드 계산
 function calculate() {
     for (var i = 0; i < N; i++){
         for (var j = 0; j < N; j++){
@@ -54,8 +71,10 @@ function calculate() {
     }
 }
 
+//게임 종료
 function endGame() {
     sw = false;
+    stopTimer();
     if (opened === N*N - m){ // 이겼을 때
         emo.innerText = "😎"
         for (var i = 0; i < N; i++){
@@ -84,6 +103,7 @@ function endGame() {
     }
 }
 
+//게임 리셋
 function reset() {
     if (!sw) {
         emo.innerText = "🙂";
@@ -108,12 +128,14 @@ function reset() {
     }
 }
 
+//셀 열기
 function open(i, j) {
     btns[i][j].innerText = bList[i][j];
     btns[i][j].disabled = true;
     opened++;
 }
 
+//빈 셀 한꺼번에 열기
 function fillEmpty(i, j) {
     open(i, j)
     if (i > 0) {
@@ -142,8 +164,12 @@ function fillEmpty(i, j) {
     } 
 }
 
+//좌클릭
 function handleClick(event) {
-    if (!sw) sw = true;
+    if (!sw) {
+        sw = true;
+        runTimer();
+    }
     const btn = event.target;
     const id = btn.id;
     const i = parseInt(id / N);
@@ -151,6 +177,7 @@ function handleClick(event) {
     if (bList[i][j] === "💣"){
         btn.setAttribute("class", "btn mine");
         endGame();
+        vibrate();
     } else {
         if (bList[i][j] === "") fillEmpty(i, j);
         else {
@@ -161,6 +188,7 @@ function handleClick(event) {
     
 }
 
+//우클릭
 function handleRightClick(event) {
     event.preventDefault();
     if (!sw) sw = true;
@@ -181,10 +209,36 @@ function handleRightClick(event) {
     num_r.innerText = fillZero(remaining);
 }
 
+//모바일은 우클릭 대신 긴 터치
+let longtouch = false;
+let touchInterval;
+function onTouchStart(event) {
+    touchInterval = setInterval(function(){longtouch = true}, 1000);
+}
+function onTouchEnd(event) {
+    clearInterval(touchInterval);
+    if (longtouch) {
+        handleRightClick(event);
+        longtouch = false;
+        vibrate();
+    }
+}
+
+
+//게임 초기화
 function init() {
+    btns = new Array(N);
+    mList = new Array(m);
+    bList = Array.from(Array(N), () => Array(N).fill(""));
+    shown = Array.from(Array(N), () => Array(N).fill(""));
+
+    remaining = m;
+    opened = 0;
+
     emo.addEventListener("click", reset);
     num_r.innerText = fillZero(remaining);
     display.innerText = fillZero(time);
+
     for (var i = 0; i < N; i++) {
         var row = document.createElement('div');
         row.setAttribute("class", "row")
@@ -194,6 +248,8 @@ function init() {
             btn.setAttribute("id", i*N+j)
             btn.addEventListener("click", handleClick);
             btn.addEventListener("contextmenu", handleRightClick);
+            btn.addEventListener("touchstart", onTouchStart);
+            btn.addEventListener("touchend", onTouchEnd);
             row.appendChild(btn);
         }
         board.appendChild(row);

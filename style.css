@@ -16,6 +16,10 @@ li {
   list-style: none;
 }
 
+body {
+  background-color: #ddd;
+}
+
 .top {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -31,7 +35,7 @@ li {
   color: red;
   background-color: black;
   padding: 5px;
-  border: 3px inset gray;
+  border: 3px inset #999;
 }
 .top .emo {
   font-size: 16px;
@@ -44,20 +48,25 @@ li {
   justify-content: center;
 }
 
-.btn {
+.btn,
+.btn:focus {
   width: 30px;
   height: 30px;
   text-align: center;
-  line-height: 26px;
+  line-height: 22px;
   border-radius: 2px;
   background-color: #ccc;
+  border: 4px outset #777;
+  outline: none;
 }
 
 .btn:disabled {
-  background-color: #ddd;
-  color: #555;
+  background-color: #eee;
+  color: #333;
+  border: 2px outset #bbb;
 }
 
 .btn.mine {
   background-color: red;
+  border: 4px outset #700;
 }
