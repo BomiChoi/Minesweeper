@@ -1,4 +1,4 @@
-const num_r = document.querySelector(".remaining > span");
+const num_r = document.querySelector(".remaining");
 const emo = document.querySelector(".emo");
 const display = document.querySelector(".time");
 const board = document.querySelector(".board");
@@ -56,12 +56,12 @@ function calculate() {
 
 function endGame() {
     sw = false;
-    if (opened === N*N - m){
+    if (opened === N*N - m){ // 이겼을 때
         emo.innerText = "😎"
         for (var i = 0; i < N; i++){
             for (var j = 0; j < N; j++){
                 btn = btns[i][j];
-                if(bList[i][j] === "💣") {
+                if (btn.disable === false && bList[i][j] === "💣") {
                     btn.innerText = "🚩";
                     remaining--;
                 }
@@ -69,12 +69,14 @@ function endGame() {
                 btn.removeEventListener("contextmenu", handleRightClick);
             }
         }
-    } else {
+        num_r.innerText = fillZero(remaining);
+    } else { // 졌을 때
         emo.innerText = "😫"
         for (var i = 0; i < N; i++){
             for (var j = 0; j < N; j++){
                 btn = btns[i][j];
-                if(bList[i][j] === "💣") btn.innerText = "💣";
+                if (btn.innerText !== "🚩" && bList[i][j] === "💣") btn.innerText = "💣";
+                if (btn.innerText === "🚩" && bList[i][j] !== "💣") btn.innerText = "❌";
                 btn.removeEventListener("click", handleClick);
                 btn.removeEventListener("contextmenu", handleRightClick);
             }
@@ -99,8 +101,8 @@ function reset() {
         remaining = m;
         opened = 0;
         time = 0;
-        num_r.innerText = remaining;
-        display.innerText = time;
+        num_r.innerText = fillZero(remaining);
+        display.innerText = fillZero(time);
         setMine();
         calculate();
     }
@@ -161,7 +163,7 @@ function handleClick(event) {
 
 function handleRightClick(event) {
     event.preventDefault();
-    if (!sw) sw = True;
+    if (!sw) sw = true;
     const btn = event.target;
     const id = btn.id;
     const i = parseInt(id / N);
@@ -176,12 +178,13 @@ function handleRightClick(event) {
         btn.removeEventListener("click", handleClick);
         remaining--;
     }
-    num_r.innerText = remaining;
+    num_r.innerText = fillZero(remaining);
 }
 
 function init() {
     emo.addEventListener("click", reset);
-    num_r.innerText = remaining;
+    num_r.innerText = fillZero(remaining);
+    display.innerText = fillZero(time);
     for (var i = 0; i < N; i++) {
         var row = document.createElement('div');
         row.setAttribute("class", "row")

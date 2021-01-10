@@ -1,6 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap");
+
 * {
   margin: 0;
   padding: 0;
+  font-family: "Roboto Mono", monospace;
+  font-weight: bold;
 }
 a {
   text-decoration: none;
@@ -21,14 +25,16 @@ li {
 .top * {
   margin: 0 auto;
 }
-.top .num {
+.top .num,
+.top .time {
+  font-size: 20px;
+  color: red;
+  background-color: black;
+  padding: 5px;
+  border: 3px inset gray;
 }
 .top .emo {
   font-size: 16px;
-}
-.top .time {
-  font-weight: bold;
-  font-size: 20px;
 }
 
 .board {
@@ -44,6 +50,12 @@ li {
   text-align: center;
   line-height: 26px;
   border-radius: 2px;
+  background-color: #ccc;
+}
+
+.btn:disabled {
+  background-color: #ddd;
+  color: #555;
 }
 
 .btn.mine {
